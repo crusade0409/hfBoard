@@ -1,0 +1,102 @@
+doctype html
+html(lang='ko')
+    head
+        include partials/head.pug 
+               
+    body
+        include partials/nav.pug
+
+        div(class='container mb-3')
+
+            h1(class='mb-3') 회의결과
+
+            table(class='board-table table table-sm border-bottom')  
+                colgroup 
+                    col(width="10%")  
+                    col(width="20%") 
+                    col(width="45%") 
+                    col(width="10%") 
+                    col(width="15%")    
+
+                thead(class='thead-light')
+                    tr
+                        th(scope='col' class='numId') 번호                               
+                        th(scope='col') 회의제목   
+                        th(scope='col') 회의결과   
+                        //-th(scope='col' class='views') 조회  
+                        th(scope='col' class='author') 작성자   
+                        th(scope='col' class='date') 게시일   
+                tbody                        
+                    - var maxContents=10                                      
+                    - for(var index = 0; index < list.length; index++)             
+                        tr
+                            if(list.length == null || list.length == 0) 
+                                td(colspan=5)="표시 할 데이터가 없습니다."
+                            
+                        tr
+                            //- 회의번호
+                            td(class='numId')=list[index]['Key']
+                            //- 회의제목
+                            td
+                                a(href='' class='title-container') 
+                                    div(data-search-highlight='title' class='title-ellipsis ellipsis float-left')
+                                        span(class='title-text')=list[index]['Record']['mtitle']
+                                        if(commentCount)
+                                            small(class="title-comments d-inline-block pl-2")=commentCount
+                                        if(attachment)
+                                            small(class="title-comments d-inline-block pl-2") 📁
+                            //- 회의결과
+                            td           
+                                a(href='' class='ellipsis' text-overflow)=list[index]['Record']['mcontents'] 
+                            //- 조회수
+                            //-td(class='views')=list[index]['Record']['model']
+                            //- 작성자                                
+                            td(class='author')
+                                div(data-search-highlight="author" class="ellipsis")=list[index]['Record']['owner']
+                            td(class="date")
+                                -var tmpDateTime = list[index]["Record"]["datetime"].split(" ")                              
+                                span()=tmpDateTime[0]
+
+                            -if( maxContents == index )
+                                break
+                                
+                           
+
+            div(class='row mb-3')
+                div(class='col-2')
+                    -var cnt = list.length + 1
+                    -console.log('jsonCount : ' + cnt)
+                    a(href='/api/createcar/'+cnt class='btn btn-primary' name='cn' value=cnt) 새글 작성
+                        
+
+                nav(class='col-8')                                       
+                    ul(class='pagination pagination-sm justify-content-center align-items-center h-100 mb-0')
+                        li(class="page-item")
+                            a(class="page-link" href="") &laquo;
+                        -var offset = 3     
+                        -var maxPage = 3                      
+                        -for(var i=1;i<maxPage;i++) 
+                            -if(i<offset || i>maxPage-offset || (i>=page-(offset-1) && i<=page+(offset-1)))
+                                -if(i != page)
+                                    li(class="page-item")
+                                        a(class="page-link" href="")=i
+                                -else
+                                    li(class="page-item disabled")
+                                        a(class="page-link" href="")=i     
+                        li(class="page-item")
+                            a(class="page-link" href="") &raquo;
+                    
+
+                                
+                                
+
+          
+        //-
+            ul
+                each item in list
+                    li="ID:  " +item["Key"]+" mtitle:  "  +item["Record"]["mtitle"]+" mcontents:  "  + item["Record"]["mcontents"] + " owner:  "  + item["Record"]["owner"] + " datetime:  "  +item["Record"]["datetime"]
+    
+    
+            
+                
+ 

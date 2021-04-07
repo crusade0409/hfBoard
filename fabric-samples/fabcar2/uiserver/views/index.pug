@@ -1,0 +1,15 @@
+doctype html
+html
+    head
+        include partials/head.pug 
+    body
+        include partials/nav.pug
+        
+        div(class='container mb-3')
+            h1 고려대학교 ICT 연구실
+            br
+            ul
+                li
+                    a(href='/api/queryallcars')  회의결과
+                li
+                    a(href='/api/createcar')  새회의 추가

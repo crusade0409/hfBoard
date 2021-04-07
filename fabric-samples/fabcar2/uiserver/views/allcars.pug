@@ -1,0 +1,68 @@
+doctype html
+html(lang='ko')
+    head
+        include partials/head.pug        
+        
+    body
+        include partials/nav.pug
+
+        div(class='container mb-3')
+
+            h1(class='mb-3') 회의결과
+
+            table(class='board-table table table-sm border-bottom')        
+                    thead(class='thead-light')
+                        tr
+                            th(scope='col' class='numId') 순번                               
+                            th(scope='col') 회의제목   
+                            th(scope='col') 회의결과   
+                            //-th(scope='col' class='views') 조회  
+                            th(scope='col' class='author') 작성자   
+                            th(scope='col' class='date') 게시일   
+                    tbody
+                        each item in list             
+                            tr
+                                if(list.length == null || list.length == 0) 
+                                    td(colspan=5)="표시 할 데이터가 없습니다."
+                                
+                            tr
+                                //- 순번
+                                td(class='numId')=item['Key']               
+                                //- 회의제목
+                                td
+                                    a(href='' class='title-container') 
+                                        div(data-search-highlight='title' class='title-ellipsis ellipsis float-left')
+                                            span(class='title-text')=item['Record']['make']
+                                            if(commentCount)
+                                                small(class="title-comments d-inline-block pl-2")=commentCount
+                                            if(attachment)
+                                                small(class="title-comments d-inline-block pl-2") 📁
+                                //- 회의결과
+                                td=item['Record']['model']           
+                                    a(href='' class='ellipsis') 
+                                //- 조회수
+                                //-td(class='views')=item['Record']['model']
+                                //- 작성자                                
+                                td(class='author')
+                                    div(data-search-highlight="author" class="ellipsis")=item['Record']['owner']
+                                td(class="date")
+                                    span()=item["Record"]["colour"]
+                                
+                                
+
+
+    //-
+            div
+                a(href='/api/queryallcars')  회의결과
+    
+            div
+                a(href='/api/createcar')  Insert  a new car
+
+            ul
+                each item in list
+                    li="CARID:  " +item["Key"]+" MAKE:  "  +item["Record"]["make"]+" MODEL:  "  + item["Record"]["model"] + " ColOuR:  "  + item["Record"]["colour"] + " OWNER:  "  +item["Record"]["owner"]
+    
+    
+            
+                
+ 

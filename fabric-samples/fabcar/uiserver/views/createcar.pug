@@ -1,0 +1,61 @@
+doctype html
+html(lang='ko')
+    head
+        include partials/head.pug  
+        -let today = new Date();  
+        -let year = today.getFullYear();
+        -let month = today.getMonth() + 1;
+        -let date = today.getDate();
+        -let day = today.getDay();    
+        -let hour = today.getHours();
+        -let minute = today.getMinutes();
+        -let second = today.getSeconds();      
+                                   
+    body
+        include partials/nav.pug
+
+        -console.log(year + '/' + month + '/' + date)           
+
+        div(class="container mb-3")
+            nav(aria-label="breadcrumb")
+                ol(class="breadcrumb p-1 pl-2 pr-2")
+                    li(class="breadcrumb-item")
+                        a(a href="/") 회의관리
+                    li(class="breadcrumb-item")
+                        a(a href="/api/queryallcars") 회의결과
+                    li(class="breadcrumb-item active" aria-current="page") 새글작성
+
+            form(action="/api/addcar" method="post")
+                div(class="form-group")
+                    label(for="title") 회의키
+                    -listCnt = listCnt + ""
+                    input(type="text" id="mid" name="mid" value=listCnt class="form-control")
+                
+                div(class="form-group")
+                    label(for="owner") 작성자                                      
+                    input(type="text" id="owner" name="owner" class="form-control")
+                
+                div(class="form-group")
+                    label(for="mtitle") 회의제목                                      
+                    input(type="text" id="mtitle" name="mtitle" class="form-control")
+
+                div(class="form-group")
+                    label(for="mcontents") 회의결과                                  
+                    //-input(type="text" id="mcontents" name="mcontents" class="form-control")    
+                    textarea(id="mcontents" name="mcontents" rows="10" class="form-control")
+
+                div(class="form-group")
+                    //- label(for="mdatetime") 작성일                                  
+                    -let tmpDate = year + '-' + month + '-' + date + ' ' + hour + ':' + minute + ':' + second
+                    input(type="hidden" id="mdatetime" name="mdatetime" class="form-control" value=tmpDate)    
+                    //- textarea(id="mcontents" name="mcontents" rows="10" class="form-control")
+
+                //- div(class="form-group")
+                //-     label(for="attachment") 첨부파일       
+                //-     input(type="file" name="attachment" class="form-control-file" id="attachment")                               
+
+                div
+                    a(a class="btn btn-primary" href="/api/queryallcars") 목록으로                    
+                    
+                    button(type="submit" class="btn btn-primary") 게시물작성
+                
